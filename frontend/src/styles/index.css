@@ -473,6 +473,44 @@ input[type="range"] {
   gap: 0.4rem;
 }
 
+.side-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.day-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.day-info li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 1rem;
+}
+
+.day-info li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.tips-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.tips-section li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .hero-content h1 {
@@ -495,7 +533,7 @@ input[type="range"] {
 
 @media (max-width: 1024px) {
   .results-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
   
   .overview-card {

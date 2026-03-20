@@ -13,31 +13,32 @@ function App() {
     setSelectedCountry(country);
   };
 
-  const handleGenerate = (formData) => {
+  const handleGenerate = async (formData) => {
     setIsGenerating(true);
-    // Simulate AI generation
-    setTimeout(() => {
-      setPlannerData({
-        destination: selectedCountry,
-        ...formData,
-        // Mock data
-        itinerary: [
-          { day: 1, title: 'Arrival & City Walk', desc: 'Explore the historic center and enjoy local cuisine.' },
-          { day: 2, title: 'Museum & Arts', desc: 'Visit the world-renowned museums and galleries.' },
-          { day: 3, title: 'Nature Escape', desc: 'A day trip to the surrounding mountains/parks.' }
-        ],
-        budgetBreakdown: [
-          { category: 'Flights', amount: '$800' },
-          { category: 'Stay', amount: '$600' },
-          { category: 'Food', amount: '$400' }
-        ],
-        places: [
-          { name: 'Central Park', image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80' },
-          { name: 'Old Town', image: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80' }
-        ]
+    try {
+      const response = await fetch('http://localhost:5001/generate-plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          destination: selectedCountry,
+          ...formData
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate plan');
+      }
+
+      const data = await response.json();
+      setPlannerData(data);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to generate travel plan. Please try again.');
+    } finally {
       setIsGenerating(false);
-    }, 2000);
+    }
   };
 
   return (
