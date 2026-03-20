@@ -40,14 +40,14 @@ const Results = ({ data, onReset }) => {
       >
         {/* Section 1: Overview */}
         <motion.section variants={item} className="overview-card glass-panel">
-          <div className="dest-image" style={{ backgroundImage: `url(${data.places[0].image})` }}>
+          <div className="dest-image" style={{ backgroundImage: `url(https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80)` }}>
             <div className="image-overlay">
-              <span className="badge">{data.mood} Trip</span>
+              <span className="badge">{data.mood?.toUpperCase()} Trip</span>
             </div>
           </div>
           <div className="overview-content">
             <h3>AI Trip Summary</h3>
-            <p>Experience the perfect blend of {data.mood.toLowerCase()} and culture in {data.destination}. This {data.duration}-day journey is curated to maximize your ${data.budget} budget while hitting every highlight.</p>
+            <p>Your {data.days}-day {data.mood} journey to {data.destination} is ready. We've optimized every detail based on your preferences and budget.</p>
           </div>
         </motion.section>
 
@@ -55,55 +55,43 @@ const Results = ({ data, onReset }) => {
         <motion.section variants={item} className="itinerary-section">
           <h2><Calendar size={24} /> Daily Itinerary</h2>
           <div className="itinerary-list">
-            {data.itinerary.map((day, idx) => (
+            {data.itinerary?.map((item, idx) => (
               <div key={idx} className="day-card glass-panel">
-                <div className="day-number">Day {day.day}</div>
+                <div className="day-number">Day {item.day}</div>
                 <div className="day-info">
-                  <h4>{day.title}</h4>
-                  <p>{day.desc}</p>
+                  <h4>Daily Activities</h4>
+                  <ul>
+                    {item.activities?.map((act, i) => (
+                      <li key={i} style={{ color: 'var(--text-dim)', marginBottom: '0.5rem' }}>{act}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ))}
           </div>
         </motion.section>
 
-        {/* Section 3: Budget breakdown */}
-        <motion.section variants={item} className="budget-section glass-panel">
-          <h2><CreditCard size={24} /> Estimated Breakdown</h2>
-          <div className="budget-items">
-            {data.budgetBreakdown.map((item, idx) => (
-              <div key={idx} className="budget-row">
-                <span>{item.category}</span>
-                <span className="amount">{item.amount}</span>
+        {/* Section 3: Budget & Tips */}
+        <div className="side-sections">
+          <motion.section variants={item} className="budget-section glass-panel">
+            <h2><CreditCard size={24} /> AI Estimate</h2>
+            <div className="budget-items">
+              <div className="budget-row total">
+                <span>Estimated Total</span>
+                <span className="amount">{data.estimatedCost}</span>
               </div>
-            ))}
-            <div className="budget-row total">
-              <span>Total Estimated</span>
-              <span className="amount">${data.budget}</span>
             </div>
-          </div>
-        </motion.section>
+          </motion.section>
 
-        {/* Section 4: Places to visit */}
-        <motion.section variants={item} className="places-section">
-          <h2><MapPin size={24} /> Must-Visit Spots</h2>
-          <div className="places-grid">
-            {data.places.map((place, idx) => (
-              <motion.div 
-                key={idx} 
-                className="place-card glass-panel"
-                whileHover={{ y: -10 }}
-              >
-                <img src={place.image} alt={place.name} />
-                <div className="place-info">
-                  <h4>{place.name}</h4>
-                  <p>Top Rated Discovery</p>
-                  <button className="visit-btn"><ExternalLink size={14} /> Details</button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+          <motion.section variants={item} className="tips-section glass-panel" style={{ marginTop: '2rem', padding: '2.5rem' }}>
+            <h2><Sparkles size={24} /> Travel Tips</h2>
+            <ul style={{ listStyle: 'none', color: 'var(--text-dim)' }}>
+              {data.travelTips?.map((tip, i) => (
+                <li key={i} style={{ marginBottom: '1rem', borderLeft: '2px solid var(--accent)', paddingLeft: '1rem' }}>{tip}</li>
+              ))}
+            </ul>
+          </motion.section>
+        </div>
       </motion.div>
     </motion.div>
   );

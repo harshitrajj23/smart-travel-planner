@@ -8,11 +8,17 @@ const TravelPanel = ({ country, onGenerate, onClose, isGenerating }) => {
   const [mood, setMood] = useState('Adventure');
 
   const moods = [
-    { name: 'Adventure', icon: <Compass size={18} /> },
-    { name: 'Chill', icon: <Coffee size={18} /> },
-    { name: 'Luxury', icon: <Sparkles size={18} /> },
-    { name: 'Budget', icon: <DollarSign size={18} /> }
+    { name: 'chill', label: 'Chill', icon: <Coffee size={18} /> },
+    { name: 'adventure', label: 'Adventure', icon: <Compass size={18} /> },
+    { name: 'romantic', label: 'Romantic', icon: <Sparkles size={18} /> },
+    { name: 'budget', label: 'Budget', icon: <DollarSign size={18} /> }
   ];
+
+  const getBudgetLabel = (val) => {
+    if (val < 1000) return 'low';
+    if (val < 3000) return 'medium';
+    return 'high';
+  };
 
   return (
     <motion.div 
@@ -34,7 +40,7 @@ const TravelPanel = ({ country, onGenerate, onClose, isGenerating }) => {
              <input 
               type="range" 
               min="1" 
-              max="30" 
+              max="15" 
               value={duration} 
               onChange={(e) => setDuration(e.target.value)} 
             />
@@ -43,13 +49,17 @@ const TravelPanel = ({ country, onGenerate, onClose, isGenerating }) => {
         </div>
 
         <div className="input-group">
-          <label><DollarSign size={18} /> Budget (USD)</label>
-          <div className="budget-input">
+          <label><DollarSign size={18} /> Budget: {getBudgetLabel(budget).toUpperCase()}</label>
+          <div className="days-control">
             <input 
-              type="number" 
+              type="range" 
+              min="500" 
+              max="5000" 
+              step="500"
               value={budget} 
               onChange={(e) => setBudget(e.target.value)} 
             />
+            <span>${budget}</span>
           </div>
         </div>
 
@@ -63,7 +73,7 @@ const TravelPanel = ({ country, onGenerate, onClose, isGenerating }) => {
                 onClick={() => setMood(m.name)}
               >
                 {m.icon}
-                {m.name}
+                {m.label}
               </button>
             ))}
           </div>
@@ -71,7 +81,7 @@ const TravelPanel = ({ country, onGenerate, onClose, isGenerating }) => {
 
         <button 
           className="generate-btn" 
-          onClick={() => onGenerate({ budget, duration, mood })}
+          onClick={() => onGenerate({ budget: getBudgetLabel(budget), days: parseInt(duration), mood })}
           disabled={isGenerating}
         >
           {isGenerating ? (
