@@ -99,17 +99,27 @@ STRICT FORMAT:
     // remove unwanted formatting if present
     text = text.replace(/```json/g, "").replace(/```/g, "").trim();
 
-    let data;
 
-    try {
-      data = JSON.parse(text);
-    } catch (err) {
-      console.error("JSON parse failed, raw output:", text);
-      return res.status(500).json({
-        error: "AI response not in JSON format",
-        raw: text,
-      });
-    }
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.log("Fixing invalid JSON...");
+
+        try {
+          // Fix common AI mistakes like "2:" keys
+          const fixed = text.replace(/(\d+):\s*"/g, '"');
+
+          data = JSON.parse(fixed);
+        } catch (err2) {
+          console.error("Still failed after fix:", text);
+          return res.status(500).json({
+            error: "AI response not in JSON format",
+            raw: text,
+          });
+        }
+      }
 
     if (data && Array.isArray(data.itinerary)) {
       data.itinerary.forEach((item) => {
