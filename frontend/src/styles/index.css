@@ -102,6 +102,23 @@ section {
   transform: translateX(-25%);
 }
 
+.globe-instruction {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+
 /* Glassmorphism Common */
 .glass-panel {
   background: var(--glass);

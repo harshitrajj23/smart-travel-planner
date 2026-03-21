@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, CreditCard, ChevronLeft, ExternalLink } from 'lucide-react';
+import { MapPin, Calendar, CreditCard, ChevronLeft, ExternalLink, Sparkles } from 'lucide-react';
 
 const Results = ({ data, onReset }) => {
   const container = {
@@ -42,12 +42,12 @@ const Results = ({ data, onReset }) => {
         <motion.section variants={item} className="overview-card glass-panel">
           <div className="dest-image" style={{ backgroundImage: `url(https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80)` }}>
             <div className="image-overlay">
-              <span className="badge">{data.mood?.toUpperCase()} Trip</span>
+              <span className="badge">{(data?.mood || 'Travel')?.toUpperCase()} Trip</span>
             </div>
           </div>
           <div className="overview-content">
             <h3>AI Trip Summary</h3>
-            <p>Your {data.days}-day {data.mood} journey to {data.destination} is ready. We've optimized every detail based on your preferences and budget.</p>
+            <p>Your {data?.days || '-'}-day {data?.mood || ''} journey to {data?.destination || 'your destination'} is ready. We've optimized every detail based on your preferences and budget.</p>
           </div>
         </motion.section>
 

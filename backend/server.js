@@ -24,9 +24,8 @@ app.get("/", (req, res) => {
 
 app.post("/generate-plan", async (req, res) => {
   try {
-    console.log("Incoming request:", { destination, days, budget, mood });
-
     const { destination, days, budget, mood } = req.body;
+    console.log("Incoming request:", { destination, days, budget, mood });
 
     if (!destination || typeof destination !== "string" || destination.trim() === "") {
       return res.status(400).json({ error: "Destination must be a non-empty string." });
@@ -76,22 +75,29 @@ STRICT FORMAT:
 `;
 
     const aiPromise = client.chat.complete({
-      model: "mistral-small",
+      model: "mistral-small-latest",
       messages: [
         { role: "user", content: prompt }
       ],
+      response_format: { type: "json_object" }
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timeout")), 10000)
+      setTimeout(() => reject(new Error("Request timeout")), 15000)
     );
 
     const response = await Promise.race([aiPromise, timeoutPromise]);
+    console.log("AI Raw Response:", JSON.stringify(response, null, 2));
 
-    let text = response.choices[0].message.content;
+    let text = "";
+    if (response && response.choices && response.choices[0] && response.choices[0].message) {
+      text = response.choices[0].message.content;
+    } else {
+      throw new Error("Invalid AI response structure");
+    }
 
-// remove unwanted formatting if present
-text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+    // remove unwanted formatting if present
+    text = text.replace(/```json/g, "").replace(/```/g, "").trim();
 
     let data;
 
