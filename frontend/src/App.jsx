@@ -57,7 +57,7 @@ function App() {
 
     setIsGenerating(true);
     try {
-      const response = await fetch('http://localhost:5001/generate-plan', {
+      const response = await fetch('https://smart-travel-planner-b1nf.onrender.com/generate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
