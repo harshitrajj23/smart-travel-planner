@@ -64,8 +64,9 @@ function App() {
         },
         body: JSON.stringify({
           destination: selectedCountry,
-          ...formData,
-          userId: user.id // Pass user ID to backend if needed for saving
+          days: formData.days,
+          budget: formData.budget,
+          mood: formData.mood
         }),
       });
 

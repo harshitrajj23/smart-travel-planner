@@ -140,8 +140,8 @@ STRICT FORMAT:
             destination,
             days,
             budget,
-            mood,
-            estimated_cost: data.estimatedCost || ""
+            estimated_cost: data.estimatedCost || "",
+            user_id: req.body.userId
           }
         ])
         .select()
